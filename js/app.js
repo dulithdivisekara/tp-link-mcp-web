@@ -1,11 +1,27 @@
 /**
  * TP-Link MCP Showcase Application Engine
- * Script-driven UI for real-time tool filtering, schema inspection, and agent config export.
+ * Script-driven UI for real-time tool filtering, schema inspection, theme switching, and agent config export.
  * Author: Dulith Divisekara (SLIIT Malabe)
  */
 
 let allTools = [];
 let currentCategory = 'all';
+
+// Theme Management
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (savedTheme === 'light' || (!savedTheme && !prefersDark)) {
+    document.documentElement.classList.remove('dark');
+  } else {
+    document.documentElement.classList.add('dark');
+  }
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+}
 
 // Load tools data dynamically
 async function initApp() {
@@ -24,9 +40,9 @@ function setCategory(cat) {
   currentCategory = cat;
   document.querySelectorAll('.cat-pill').forEach(btn => {
     if (btn.dataset.cat === cat) {
-      btn.className = 'cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40';
+      btn.className = 'cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-teal dark:text-tplink-cyan border border-tplink-teal/40';
     } else {
-      btn.className = 'cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5';
+      btn.className = 'cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5';
     }
   });
   filterTools();
@@ -68,20 +84,20 @@ function openToolModal(toolName) {
 
   paramsList.innerHTML = '';
   if (!tool.parameters || tool.parameters.length === 0) {
-    paramsList.innerHTML = '<div class="text-xs text-slate-400 italic">No parameters required (zero-argument tool).</div>';
+    paramsList.innerHTML = '<div class="text-xs text-slate-500 dark:text-slate-400 italic">No parameters required (zero-argument tool).</div>';
   } else {
     tool.parameters.forEach(p => {
       const pDiv = document.createElement('div');
-      pDiv.className = 'p-3 rounded-lg bg-black/40 border border-white/5 text-xs';
+      pDiv.className = 'p-3 rounded-lg bg-black/5 dark:bg-black/40 border border-black/5 dark:border-white/5 text-xs';
       pDiv.innerHTML = `
         <div class="flex items-center justify-between mb-1">
           <div class="flex items-center gap-2">
-            <span class="font-mono text-tplink-cyan font-bold">${p.name}</span>
-            <span class="px-1.5 py-0.2 rounded bg-white/10 text-[10px] font-mono text-slate-400">${p.type}</span>
+            <span class="font-mono text-tplink-teal dark:text-tplink-cyan font-bold">${p.name}</span>
+            <span class="px-1.5 py-0.2 rounded bg-black/10 dark:bg-white/10 text-[10px] font-mono text-slate-600 dark:text-slate-400">${p.type}</span>
           </div>
-          <span class="text-[10px] font-mono ${p.required ? 'text-amber-400' : 'text-slate-500'}">${p.required ? 'Required' : 'Optional'}</span>
+          <span class="text-[10px] font-mono ${p.required ? 'text-amber-500' : 'text-slate-500'}">${p.required ? 'Required' : 'Optional'}</span>
         </div>
-        <p class="text-slate-300 text-[11px]">${p.description}</p>
+        <p class="text-slate-700 dark:text-slate-300 text-[11px]">${p.description}</p>
       `;
       paramsList.appendChild(pDiv);
     });
@@ -134,11 +150,11 @@ const clientConfigs = {
 function setConfigTab(client) {
   document.getElementById('config-snippet').textContent = clientConfigs[client];
   document.querySelectorAll('.cfg-tab').forEach(b => {
-    b.className = 'cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white';
+    b.className = 'cfg-tab shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white';
   });
   const active = document.getElementById('tab-' + client);
   if (active) {
-    active.className = 'cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40';
+    active.className = 'cfg-tab shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-teal dark:text-tplink-cyan border border-tplink-teal/40';
   }
 }
 
@@ -152,7 +168,7 @@ function copyHeroCmd() {
   const text = document.getElementById('hero-cmd').textContent;
   navigator.clipboard.writeText(text);
   const btn = document.getElementById('hero-copy-btn');
-  btn.innerHTML = `<svg class="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-emerald-400">Copied!</span>`;
+  btn.innerHTML = `<svg class="w-4 h-4 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg><span class="text-emerald-500">Copied!</span>`;
   setTimeout(() => {
     btn.innerHTML = `<svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg><span>Copy</span>`;
   }, 2000);
@@ -164,6 +180,7 @@ window.addEventListener('keydown', (e) => {
 });
 
 // Init on DOM ready
+initTheme();
 document.addEventListener('DOMContentLoaded', () => {
   initApp();
 });

@@ -35,34 +35,72 @@
     }
   </script>
   <style>
-    body {
+    /* Dark Theme */
+    html.dark body {
       background-color: #0A0D14;
       color: #E2E8F0;
-      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
-    .glass-panel {
+    html.dark .glass-panel {
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
-    .glass-card {
+    html.dark .glass-card {
       background: rgba(20, 27, 45, 0.55);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.07);
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .glass-card:hover {
+    html.dark .glass-card:hover {
       border-color: rgba(0, 196, 180, 0.35);
-      transform: translateY(-2px);
       box-shadow: 0 12px 30px -10px rgba(0, 164, 153, 0.18);
     }
-    .glow-accent {
-      box-shadow: 0 0 50px -10px rgba(0, 164, 153, 0.25);
+
+    /* Light Theme */
+    html:not(.dark) body {
+      background-color: #F8FAFC;
+      color: #1E293B;
+    }
+    html:not(.dark) .glass-panel {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+    html:not(.dark) .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.07);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    html:not(.dark) .glass-card:hover {
+      border-color: rgba(0, 164, 153, 0.4);
+      box-shadow: 0 12px 25px -5px rgba(0, 164, 153, 0.12);
+    }
+    html:not(.dark) .text-slate-200, html:not(.dark) .text-white {
+      color: #0F172A;
+    }
+    html:not(.dark) .text-slate-300 {
+      color: #334155;
+    }
+    html:not(.dark) .text-slate-400 {
+      color: #64748B;
+    }
+    html:not(.dark) .bg-slate-950, html:not(.dark) .bg-slate-950\/40 {
+      background-color: #F1F5F9;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
     }
   </style>
 </head>
-<body class="min-h-screen font-sans antialiased selection:bg-tplink-teal/30 selection:text-white">
+<body class="min-h-screen font-sans antialiased selection:bg-tplink-teal/30 selection:text-white transition-colors duration-200">
 
   <!-- Ambient Glow Background -->
   <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] overflow-hidden pointer-events-none z-0">
@@ -71,14 +109,14 @@
   </div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-40 glass-panel border-b border-white/5">
+  <header class="sticky top-0 z-40 glass-panel border-b border-black/5 dark:border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
         <!-- Dual Official Logos: TP-Link + MCP -->
-        <a href="/" class="flex items-center gap-3 group">
-          <div class="flex items-center gap-1.5">
+        <a href="/" class="flex items-center gap-2 sm:gap-3 group">
+          <div class="flex items-center gap-1.5 shrink-0">
             <!-- TP-Link Modern Minimal Emblem -->
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-tplink-teal to-tplink-darkteal flex items-center justify-center shadow-lg shadow-tplink-teal/20">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-tplink-teal to-tplink-darkteal flex items-center justify-center shadow-md shadow-tplink-teal/20">
               <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 11a9 9 0 0 1 9 9"></path>
                 <path d="M4 4a16 16 0 0 1 16 16"></path>
@@ -86,107 +124,115 @@
               </svg>
             </div>
             <!-- Plus Connector -->
-            <span class="text-slate-500 font-mono text-xs">+</span>
-            <!-- Model Context Protocol Emblem -->
-            <div class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+            <span class="text-slate-400 font-mono text-xs">+</span>
+            <!-- Model Context Protocol Official Emblem -->
+            <div class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-500 dark:text-purple-400">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
               </svg>
             </div>
           </div>
           <div>
-            <div class="flex items-center gap-2">
-              <span class="font-bold text-base tracking-tight text-white">TP-Link Router</span>
-              <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">MCP</span>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+              <span class="font-bold text-sm sm:text-base tracking-tight text-slate-900 dark:text-white">TP-Link Router</span>
+              <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20">MCP</span>
             </div>
-            <p class="text-[10px] text-slate-400 font-mono tracking-wider -mt-0.5">MODEL CONTEXT PROTOCOL • v1.0.0</p>
+            <p class="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-mono tracking-wider -mt-0.5">MODEL CONTEXT PROTOCOL • v1.0.0</p>
           </div>
         </a>
       </div>
 
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
-        <a href="#quickstart" class="hover:text-white transition-colors">Quickstart</a>
-        <a href="#tools-catalog" class="hover:text-white transition-colors">Tools (18)</a>
-        <a href="#clients" class="hover:text-white transition-colors">Client Setup</a>
-        <a href="https://tp-link-cli.dulith.me" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-mono text-tplink-cyan border border-white/10 transition-all">
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a href="#quickstart" class="hover:text-tplink-teal dark:hover:text-white transition-colors">Quickstart</a>
+        <a href="#tools-catalog" class="hover:text-tplink-teal dark:hover:text-white transition-colors">Tools (18)</a>
+        <a href="#clients" class="hover:text-tplink-teal dark:hover:text-white transition-colors">Client Setup</a>
+        <a href="https://tp-link-cli.dulith.me" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-xs font-mono text-tplink-teal dark:text-tplink-cyan border border-black/10 dark:border-white/10 transition-all">
           <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-          Switch to CLI Tool
+          Switch to CLI
         </a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" target="_blank" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-mono border border-white/10 transition-colors">
+      <!-- Right Actions (Theme Switcher + Connect) -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Theme Toggle Button -->
+        <button onclick="toggleTheme()" id="theme-toggle-btn" title="Toggle Theme" class="p-2 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 border border-black/10 dark:border-white/10 transition-all">
+          <svg id="theme-sun" class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg id="theme-moon" class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" target="_blank" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-slate-700 dark:text-slate-200 text-xs font-mono border border-black/10 dark:border-white/10 transition-colors">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-          <span class="hidden sm:inline">Web Repo</span>
+          <span>GitHub</span>
         </a>
-        <a href="#quickstart" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-tplink-teal to-emerald-500 text-white text-xs font-semibold hover:opacity-95 shadow-lg shadow-tplink-teal/20 transition-all">
-          Connect MCP
+
+        <a href="#quickstart" class="px-3 sm:px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-tplink-teal to-emerald-500 text-white text-xs font-semibold hover:opacity-95 shadow-md shadow-tplink-teal/20 transition-all shrink-0">
+          Connect
         </a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="relative pt-16 pb-20 overflow-hidden">
+  <section class="relative pt-12 sm:pt-16 pb-16 sm:pb-20 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="text-center max-w-3xl mx-auto">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-mono mb-6">
-          <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-300 text-xs font-mono mb-6">
+          <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
           Anthropic Model Context Protocol Standard
         </div>
-        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
           Supercharge AI Agents with <br>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-tplink-cyan via-teal-300 to-purple-400">Direct Cellular Router Control.</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-tplink-teal via-teal-400 to-purple-500 dark:from-tplink-cyan dark:via-teal-300 dark:to-purple-400">Direct Cellular Router Control.</span>
         </h1>
-        <p class="text-lg text-slate-300 mb-8 leading-relaxed font-normal">
+        <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed font-normal">
           Expose 18 carrier-grade tools to Claude, Antigravity, and Cursor. Let autonomous agents monitor RSRP signal drops, lock high-speed LTE bands, clamp MTU to 1420 to prevent packet fragmentation, and read SMS verification codes.
         </p>
 
-        <!-- Stdio Run Snippet -->
+        <!-- Stdio Run Snippet Box (Responsive on mobile) -->
         <div class="max-w-xl mx-auto mb-10">
-          <div class="relative glass-panel rounded-xl p-2.5 flex items-center justify-between border border-white/10 shadow-2xl">
-            <div class="flex items-center gap-3 pl-3 overflow-x-auto text-left">
-              <span class="text-purple-400 font-mono select-none">$</span>
-              <code id="hero-cmd" class="font-mono text-sm sm:text-base text-slate-200 whitespace-nowrap">npx -y @dulith/tplink-mcp</code>
+          <div class="relative glass-panel rounded-xl p-2 sm:p-2.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between border border-black/10 dark:border-white/10 shadow-xl gap-2 sm:gap-0">
+            <div class="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-3 overflow-x-auto text-left py-1">
+              <span class="text-purple-600 dark:text-purple-400 font-mono select-none font-bold">$</span>
+              <code id="hero-cmd" class="font-mono text-xs sm:text-base text-slate-800 dark:text-slate-200 whitespace-nowrap">npx -y @dulith/tplink-mcp</code>
             </div>
-            <button onclick="copyHeroCmd()" id="hero-copy-btn" class="ml-3 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-medium transition-all flex items-center gap-1.5 shrink-0">
+            <button onclick="copyHeroCmd()" id="hero-copy-btn" class="w-full sm:w-auto sm:ml-3 px-4 py-2 rounded-lg bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-slate-900 dark:text-white text-xs font-mono font-medium transition-all flex items-center justify-center gap-1.5 shrink-0 border border-black/5 dark:border-white/5">
               <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <span>Copy</span>
             </button>
           </div>
-          <p class="text-[11px] text-slate-400 mt-2 font-mono">Stdio protocol supported across Claude Desktop, Antigravity, and Zed</p>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-mono">Stdio protocol supported across Claude Desktop, Antigravity, and Zed</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- 18 Tools Interactive Catalog -->
-  <section id="tools-catalog" class="py-16 bg-slate-950/40 border-t border-white/5">
+  <section id="tools-catalog" class="py-16 bg-slate-100 dark:bg-slate-950/40 border-t border-black/5 dark:border-white/5">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
         <div>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tplink-teal/10 border border-tplink-teal/20 text-tplink-cyan text-xs font-mono mb-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tplink-teal/10 border border-tplink-teal/20 text-tplink-teal dark:text-tplink-cyan text-xs font-mono mb-2">
             Schema-Driven Registry
           </div>
-          <h2 class="text-3xl font-extrabold text-white tracking-tight">18 Carrier-Grade MCP Tools</h2>
-          <p class="text-slate-400 text-sm mt-1">Click any tool to inspect its JSON Schema and sample LLM prompt</p>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">18 Carrier-Grade MCP Tools</h2>
+          <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Click any tool to inspect its JSON Schema and sample LLM prompt</p>
         </div>
 
-        <!-- Search Bar -->
         <div>
-          <input type="text" id="tool-search" oninput="filterTools()" placeholder="Filter tools (e.g. signal, band, sms)..." class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs font-mono focus:outline-none focus:border-tplink-teal w-72">
+          <input type="text" id="tool-search" oninput="filterTools()" placeholder="Filter tools (e.g. signal, band, sms)..." class="px-4 py-2 rounded-xl bg-white dark:bg-white/5 border border-black/10 dark:border-white/10 text-slate-900 dark:text-white placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-tplink-teal w-full sm:w-72">
         </div>
       </div>
 
-      <!-- Category Filter Pills -->
-      <div class="flex flex-wrap items-center gap-2 mb-8">
-        <button onclick="setCategory('all')" data-cat="all" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40">All Tools (18)</button>
-        <button onclick="setCategory('Diagnostics')" data-cat="Diagnostics" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Diagnostics</button>
-        <button onclick="setCategory('Cellular')" data-cat="Cellular" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Cellular RF</button>
-        <button onclick="setCategory('SMS')" data-cat="SMS" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">SMS & USSD</button>
-        <button onclick="setCategory('Wi-Fi')" data-cat="Wi-Fi" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Wi-Fi & LAN</button>
-        <button onclick="setCategory('System')" data-cat="System" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">System</button>
-        <button onclick="setCategory('Tuning')" data-cat="Tuning" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Tuning & Pulse</button>
+      <!-- Category Filter Pills (Mobile Swipe) -->
+      <div class="flex items-center gap-2 mb-8 overflow-x-auto no-scrollbar pb-2">
+        <button onclick="setCategory('all')" data-cat="all" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-teal dark:text-tplink-cyan border border-tplink-teal/40">All Tools (18)</button>
+        <button onclick="setCategory('Diagnostics')" data-cat="Diagnostics" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">Diagnostics</button>
+        <button onclick="setCategory('Cellular')" data-cat="Cellular" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">Cellular RF</button>
+        <button onclick="setCategory('SMS')" data-cat="SMS" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">SMS & USSD</button>
+        <button onclick="setCategory('Wi-Fi')" data-cat="Wi-Fi" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">Wi-Fi & LAN</button>
+        <button onclick="setCategory('System')" data-cat="System" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">System</button>
+        <button onclick="setCategory('Tuning')" data-cat="Tuning" class="cat-pill shrink-0 px-3 py-1 rounded-full text-xs font-mono font-medium bg-black/5 dark:bg-white/5 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-black/5 dark:border-white/5">Tuning & Pulse</button>
       </div>
 
       <!-- Tools Grid -->
@@ -453,19 +499,19 @@
   <section id="clients" class="py-16">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-8">
-        <h2 class="text-3xl font-extrabold text-white tracking-tight">One-Click Client Setup</h2>
-        <p class="text-slate-400 text-sm mt-1">Configure your favorite AI agent framework in seconds</p>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">One-Click Client Setup</h2>
+        <p class="text-slate-600 dark:text-slate-400 text-xs sm:text-sm mt-1">Configure your favorite AI agent framework in seconds</p>
       </div>
 
-      <div class="glass-panel rounded-2xl p-6 border border-white/10">
-        <div class="flex flex-wrap gap-2 border-b border-white/10 pb-4 mb-6">
-          <button onclick="setConfigTab('claude')" id="tab-claude" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40">Claude Desktop</button>
-          <button onclick="setConfigTab('antigravity')" id="tab-antigravity" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white">Google Antigravity</button>
-          <button onclick="setConfigTab('docker')" id="tab-docker" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white">Docker / GHCR</button>
+      <div class="glass-panel rounded-2xl p-4 sm:p-6 border border-black/10 dark:border-white/10">
+        <div class="flex items-center gap-2 border-b border-black/10 dark:border-white/10 pb-4 mb-6 overflow-x-auto no-scrollbar">
+          <button onclick="setConfigTab('claude')" id="tab-claude" class="cfg-tab shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-teal dark:text-tplink-cyan border border-tplink-teal/40">Claude Desktop</button>
+          <button onclick="setConfigTab('antigravity')" id="tab-antigravity" class="cfg-tab shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Google Antigravity</button>
+          <button onclick="setConfigTab('docker')" id="tab-docker" class="cfg-tab shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white">Docker / GHCR</button>
         </div>
 
-        <div class="relative bg-black/60 rounded-xl p-4 font-mono text-xs sm:text-sm text-slate-200 border border-white/5">
-          <pre id="config-snippet">{
+        <div class="relative bg-slate-900 rounded-xl p-4 font-mono text-xs sm:text-sm text-slate-200 border border-white/5">
+          <pre id="config-snippet" class="overflow-x-auto pr-16">{
   "mcpServers": {
     "tplink-router": {
       "command": "npx",
@@ -487,22 +533,22 @@
 
   <!-- Tool Details Modal -->
   <div id="tool-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-    <div class="glass-panel bg-[#0F1420] border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
-      <button onclick="closeToolModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+    <div class="glass-panel bg-white dark:bg-[#0F1420] border border-black/10 dark:border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeToolModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 dark:hover:text-white text-lg">✕</button>
       <div class="flex items-center gap-2 mb-2">
-        <h3 id="modal-title" class="text-lg font-bold font-mono text-tplink-cyan">router_profile_check</h3>
-        <span id="modal-category" class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">Diagnostics</span>
+        <h3 id="modal-title" class="text-lg font-bold font-mono text-tplink-teal dark:text-tplink-cyan">router_profile_check</h3>
+        <span id="modal-category" class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">Diagnostics</span>
       </div>
-      <p id="modal-desc" class="text-slate-300 text-xs mb-4">Detailed tool description</p>
+      <p id="modal-desc" class="text-slate-600 dark:text-slate-300 text-xs mb-4">Detailed tool description</p>
 
       <div class="mb-4">
-        <h4 class="text-xs font-mono uppercase text-slate-400 mb-2 font-semibold">Parameters</h4>
+        <h4 class="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 mb-2 font-semibold">Parameters</h4>
         <div id="modal-params" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
       </div>
 
       <div>
-        <h4 class="text-xs font-mono uppercase text-slate-400 mb-2 font-semibold">Example AI Prompt</h4>
-        <div id="modal-prompt" class="p-3 rounded-lg bg-black/50 border border-white/5 font-mono text-xs text-emerald-300">
+        <h4 class="text-xs font-mono uppercase text-slate-500 dark:text-slate-400 mb-2 font-semibold">Example AI Prompt</h4>
+        <div id="modal-prompt" class="p-3 rounded-lg bg-black/5 dark:bg-black/50 border border-black/10 dark:border-white/5 font-mono text-xs text-emerald-600 dark:text-emerald-300">
           "Check router status"
         </div>
       </div>
@@ -510,23 +556,23 @@
   </div>
 
   <!-- Footer -->
-  <footer class="border-t border-white/10 bg-slate-950 py-12 text-slate-400 text-xs">
+  <footer class="border-t border-black/10 dark:border-white/10 bg-slate-100 dark:bg-slate-950 py-12 text-slate-500 dark:text-slate-400 text-xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-tplink-teal to-purple-600 flex items-center justify-center text-white font-bold text-xs">
           DD
         </div>
         <div>
-          <p class="text-white font-medium">Crafted by Dulith Divisekara</p>
+          <p class="text-slate-900 dark:text-white font-medium">Crafted by Dulith Divisekara</p>
           <p class="text-slate-500">IT Undergraduate @ SLIIT Malabe, Sri Lanka • Born from Hutch 4G Optimization</p>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-6 font-mono text-xs">
-        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" class="hover:text-white transition-colors">Web GitHub</a>
-        <a href="https://github.com/dulithdivisekara/tplink-mcp" class="hover:text-white transition-colors">MCP GitHub</a>
-        <a href="https://tp-link-cli.dulith.me" class="hover:text-tplink-cyan transition-colors">CLI Tool Showcase</a>
-        <a href="https://dulith.me" class="hover:text-white transition-colors">dulith.me</a>
+        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" class="hover:text-slate-900 dark:hover:text-white transition-colors">Web GitHub</a>
+        <a href="https://github.com/dulithdivisekara/tplink-mcp" class="hover:text-slate-900 dark:hover:text-white transition-colors">MCP GitHub</a>
+        <a href="https://tp-link-cli.dulith.me" class="hover:text-tplink-teal dark:hover:text-tplink-cyan transition-colors">CLI Tool Showcase</a>
+        <a href="https://dulith.me" class="hover:text-slate-900 dark:hover:text-white transition-colors">dulith.me</a>
       </div>
 
       <div class="text-slate-500 text-center md:text-right font-mono">
