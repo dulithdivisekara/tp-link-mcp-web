@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TP-Link MCP | Official Model Context Protocol Server for 4G/5G Routers</title>
+  <meta name="description" content="Universal Model Context Protocol (MCP) server for TP-Link 4G/5G routers. Empowers AI agents to diagnose RF metrics, optimize cellular bands, clamp MTU, and inspect SMS.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['"Fira Code"', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+          },
+          colors: {
+            tplink: {
+              teal: '#00A499',
+              darkteal: '#007A72',
+              cyan: '#00C4B4',
+              accent: '#10B981'
+            },
+            mcp: {
+              purple: '#8B5CF6',
+              dark: '#0D1117'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #0A0D14;
+      color: #E2E8F0;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card {
+      background: rgba(20, 27, 45, 0.55);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(0, 196, 180, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(0, 164, 153, 0.18);
+    }
+    .glow-accent {
+      box-shadow: 0 0 50px -10px rgba(0, 164, 153, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen font-sans antialiased selection:bg-tplink-teal/30 selection:text-white">
+
+  <!-- Ambient Glow Background -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] overflow-hidden pointer-events-none z-0">
+    <div class="absolute top-[-120px] left-1/3 w-[550px] h-[350px] bg-tplink-teal/15 rounded-full blur-[140px]"></div>
+    <div class="absolute top-[80px] right-1/4 w-[450px] h-[300px] bg-purple-600/10 rounded-full blur-[150px]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <!-- Dual Official Logos: TP-Link + MCP -->
+        <a href="/" class="flex items-center gap-3 group">
+          <div class="flex items-center gap-1.5">
+            <!-- TP-Link Modern Minimal Emblem -->
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-tplink-teal to-tplink-darkteal flex items-center justify-center shadow-lg shadow-tplink-teal/20">
+              <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 11a9 9 0 0 1 9 9"></path>
+                <path d="M4 4a16 16 0 0 1 16 16"></path>
+                <circle cx="5" cy="19" r="1" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <!-- Plus Connector -->
+            <span class="text-slate-500 font-mono text-xs">+</span>
+            <!-- Model Context Protocol Emblem -->
+            <div class="w-8 h-8 rounded-lg bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-base tracking-tight text-white">TP-Link Router</span>
+              <span class="px-1.5 py-0.5 text-[10px] font-mono font-semibold rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">MCP</span>
+            </div>
+            <p class="text-[10px] text-slate-400 font-mono tracking-wider -mt-0.5">MODEL CONTEXT PROTOCOL • v1.0.0</p>
+          </div>
+        </a>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+        <a href="#quickstart" class="hover:text-white transition-colors">Quickstart</a>
+        <a href="#tools-catalog" class="hover:text-white transition-colors">Tools (18)</a>
+        <a href="#clients" class="hover:text-white transition-colors">Client Setup</a>
+        <a href="https://tp-link-cli.dulith.me" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 hover:bg-white/10 text-xs font-mono text-tplink-cyan border border-white/10 transition-all">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+          Switch to CLI Tool
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" target="_blank" class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-mono border border-white/10 transition-colors">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span class="hidden sm:inline">Web Repo</span>
+        </a>
+        <a href="#quickstart" class="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-tplink-teal to-emerald-500 text-white text-xs font-semibold hover:opacity-95 shadow-lg shadow-tplink-teal/20 transition-all">
+          Connect MCP
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative pt-16 pb-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-mono mb-6">
+          <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+          Anthropic Model Context Protocol Standard
+        </div>
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          Supercharge AI Agents with <br>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-tplink-cyan via-teal-300 to-purple-400">Direct Cellular Router Control.</span>
+        </h1>
+        <p class="text-lg text-slate-300 mb-8 leading-relaxed font-normal">
+          Expose 18 carrier-grade tools to Claude, Antigravity, and Cursor. Let autonomous agents monitor RSRP signal drops, lock high-speed LTE bands, clamp MTU to 1420 to prevent packet fragmentation, and read SMS verification codes.
+        </p>
+
+        <!-- Stdio Run Snippet -->
+        <div class="max-w-xl mx-auto mb-10">
+          <div class="relative glass-panel rounded-xl p-2.5 flex items-center justify-between border border-white/10 shadow-2xl">
+            <div class="flex items-center gap-3 pl-3 overflow-x-auto text-left">
+              <span class="text-purple-400 font-mono select-none">$</span>
+              <code id="hero-cmd" class="font-mono text-sm sm:text-base text-slate-200 whitespace-nowrap">npx -y @dulith/tplink-mcp</code>
+            </div>
+            <button onclick="copyHeroCmd()" id="hero-copy-btn" class="ml-3 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-mono font-medium transition-all flex items-center gap-1.5 shrink-0">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>Copy</span>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2 font-mono">Stdio protocol supported across Claude Desktop, Antigravity, and Zed</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 18 Tools Interactive Catalog -->
+  <section id="tools-catalog" class="py-16 bg-slate-950/40 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+        <div>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tplink-teal/10 border border-tplink-teal/20 text-tplink-cyan text-xs font-mono mb-2">
+            Schema-Driven Registry
+          </div>
+          <h2 class="text-3xl font-extrabold text-white tracking-tight">18 Carrier-Grade MCP Tools</h2>
+          <p class="text-slate-400 text-sm mt-1">Click any tool to inspect its JSON Schema and sample LLM prompt</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div>
+          <input type="text" id="tool-search" oninput="filterTools()" placeholder="Filter tools (e.g. signal, band, sms)..." class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-xs font-mono focus:outline-none focus:border-tplink-teal w-72">
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2 mb-8">
+        <button onclick="setCategory('all')" data-cat="all" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40">All Tools (18)</button>
+        <button onclick="setCategory('Diagnostics')" data-cat="Diagnostics" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Diagnostics</button>
+        <button onclick="setCategory('Cellular')" data-cat="Cellular" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Cellular RF</button>
+        <button onclick="setCategory('SMS')" data-cat="SMS" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">SMS & USSD</button>
+        <button onclick="setCategory('Wi-Fi')" data-cat="Wi-Fi" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Wi-Fi & LAN</button>
+        <button onclick="setCategory('System')" data-cat="System" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">System</button>
+        <button onclick="setCategory('Tuning')" data-cat="Tuning" class="cat-pill px-3 py-1 rounded-full text-xs font-mono font-medium bg-white/5 text-slate-400 hover:text-white border border-white/5">Tuning & Pulse</button>
+      </div>
+
+      <!-- Tools Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="tools-grid">
+        <!-- TOOLS_GRID_START -->
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_profile_check" data-cat="Diagnostics" onclick="openToolModal('router_profile_check')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_profile_check</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-blue-500/10 text-blue-400 border-blue-500/20">Diagnostics</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Probe router gateway to detect hardware model, firmware build string, and auth encryption type (AES, RSA, MD5, or plain form).</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_status" data-cat="Diagnostics" onclick="openToolModal('router_get_status')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_status</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-blue-500/10 text-blue-400 border-blue-500/20">Diagnostics</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieve comprehensive runtime telemetry: WAN IP, gateway, DNS servers, uptime, cellular network type, and connection state.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_rf_signal" data-cat="Cellular" onclick="openToolModal('router_get_rf_signal')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_rf_signal</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Cellular</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Read cellular radio frequency telemetry: RSRP (dBm), RSRQ (dB), SINR (dB), RSSI, current LTE/5G band, and Physical Cell ID (PCI).</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_lock_cell_band" data-cat="Cellular" onclick="openToolModal('router_lock_cell_band')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_lock_cell_band</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Cellular</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Force-lock modem to specific LTE carrier band (e.g., Band 3 1800MHz, Band 8 900MHz, Band 40 2300MHz) or Physical Cell ID (PCI).</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>3 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_network_mode" data-cat="Cellular" onclick="openToolModal('router_set_network_mode')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_network_mode</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Cellular</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Switch cellular RAT between AUTO, 4G_ONLY, 3G_ONLY, and 5G_NSA to prevent drops to degraded 3G fallbacks.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_manage_apn" data-cat="Cellular" onclick="openToolModal('router_manage_apn')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_manage_apn</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-emerald-500/10 text-emerald-400 border-emerald-500/20">Cellular</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Read or update the cellular APN profile, PDP type (IPv4, IPv6, IPv4v6), and authentication credentials.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_read_sms" data-cat="SMS" onclick="openToolModal('router_read_sms')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_read_sms</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-purple-500/10 text-purple-400 border-purple-500/20">SMS</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">List SMS messages stored on the SIM card, read sender phone numbers, timestamps, message content, and extract 2FA codes.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_send_sms" data-cat="SMS" onclick="openToolModal('router_send_sms')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_send_sms</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-purple-500/10 text-purple-400 border-purple-500/20">SMS</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Transmit an outgoing SMS message via the SIM modem to activate package bundles, query quotas, or send alerts.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_send_ussd" data-cat="SMS" onclick="openToolModal('router_send_ussd')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_send_ussd</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-purple-500/10 text-purple-400 border-purple-500/20">SMS</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Send interactive USSD code to the mobile network operator gateway and capture the returned response text.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_wifi_status" data-cat="Wi-Fi" onclick="openToolModal('router_get_wifi_status')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_wifi_status</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-amber-500/10 text-amber-400 border-amber-500/20">Wi-Fi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Inspect 2.4GHz & 5GHz Wi-Fi interfaces: SSID, enable state, channel, channel width (20/40/80 MHz), and security cipher.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_wifi_channel" data-cat="Wi-Fi" onclick="openToolModal('router_set_wifi_channel')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_wifi_channel</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-amber-500/10 text-amber-400 border-amber-500/20">Wi-Fi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Change Wi-Fi broadcast channel to avoid apartment or neighborhood frequency interference.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_connected_devices" data-cat="Wi-Fi" onclick="openToolModal('router_get_connected_devices')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_connected_devices</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-amber-500/10 text-amber-400 border-amber-500/20">Wi-Fi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">List all active DHCP and Wi-Fi clients with hostnames, IP addresses, MAC addresses, and connection interface.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_reboot" data-cat="System" onclick="openToolModal('router_reboot')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_reboot</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Initiate a clean software reboot of the router OS and cellular modem module.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_reconnect_wan" data-cat="System" onclick="openToolModal('router_reconnect_wan')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_reconnect_wan</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Tear down and re-establish the cellular PPP/QMI/NDIS WAN connection to obtain a fresh CGNAT IP lease without rebooting.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>0 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_ping_pulse" data-cat="Tuning" onclick="openToolModal('router_ping_pulse')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_ping_pulse</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-teal-500/10 text-teal-400 border-teal-500/20">Tuning</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Send low-overhead 28-byte UDP/ICMP echo pulses to remote server to prevent carrier NAT timeout and radio state demotion.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_benchmark_network" data-cat="Tuning" onclick="openToolModal('router_benchmark_network')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_benchmark_network</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-teal-500/10 text-teal-400 border-teal-500/20">Tuning</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Measure baseline latency, loaded bufferbloat jitter, and MTU path packet fragmentation.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_optimize_network" data-cat="Tuning" onclick="openToolModal('router_optimize_network')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_optimize_network</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-teal-500/10 text-teal-400 border-teal-500/20">Tuning</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Apply or revert kernel BBR congestion control, 1420 MTU GTP clamping, and 1.1.1.1 DNS tuning.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_execute_command" data-cat="System" onclick="openToolModal('router_execute_command')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_execute_command</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Execute arbitrary raw JSON-RPC or cgi-bin command directly against the router administrative interface.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <!-- TOOLS_GRID_END -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Setup Section -->
+  <section id="clients" class="py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-extrabold text-white tracking-tight">One-Click Client Setup</h2>
+        <p class="text-slate-400 text-sm mt-1">Configure your favorite AI agent framework in seconds</p>
+      </div>
+
+      <div class="glass-panel rounded-2xl p-6 border border-white/10">
+        <div class="flex flex-wrap gap-2 border-b border-white/10 pb-4 mb-6">
+          <button onclick="setConfigTab('claude')" id="tab-claude" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-tplink-teal/20 text-tplink-cyan border border-tplink-teal/40">Claude Desktop</button>
+          <button onclick="setConfigTab('antigravity')" id="tab-antigravity" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white">Google Antigravity</button>
+          <button onclick="setConfigTab('docker')" id="tab-docker" class="cfg-tab px-3 py-1.5 rounded-lg text-xs font-mono font-medium text-slate-400 hover:text-white">Docker / GHCR</button>
+        </div>
+
+        <div class="relative bg-black/60 rounded-xl p-4 font-mono text-xs sm:text-sm text-slate-200 border border-white/5">
+          <pre id="config-snippet">{
+  "mcpServers": {
+    "tplink-router": {
+      "command": "npx",
+      "args": ["-y", "@dulith/tplink-mcp"],
+      "env": {
+        "TPLINK_ROUTER_IP": "192.168.1.1",
+        "TPLINK_PASSWORD": "your_router_password"
+      }
+    }
+  }
+}</pre>
+          <button onclick="copyConfigSnippet()" class="absolute top-3 right-3 px-3 py-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white text-xs font-mono transition-colors">
+            Copy
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tool Details Modal -->
+  <div id="tool-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
+    <div class="glass-panel bg-[#0F1420] border border-white/10 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
+      <button onclick="closeToolModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">✕</button>
+      <div class="flex items-center gap-2 mb-2">
+        <h3 id="modal-title" class="text-lg font-bold font-mono text-tplink-cyan">router_profile_check</h3>
+        <span id="modal-category" class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20">Diagnostics</span>
+      </div>
+      <p id="modal-desc" class="text-slate-300 text-xs mb-4">Detailed tool description</p>
+
+      <div class="mb-4">
+        <h4 class="text-xs font-mono uppercase text-slate-400 mb-2 font-semibold">Parameters</h4>
+        <div id="modal-params" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
+      </div>
+
+      <div>
+        <h4 class="text-xs font-mono uppercase text-slate-400 mb-2 font-semibold">Example AI Prompt</h4>
+        <div id="modal-prompt" class="p-3 rounded-lg bg-black/50 border border-white/5 font-mono text-xs text-emerald-300">
+          "Check router status"
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/10 bg-slate-950 py-12 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-tplink-teal to-purple-600 flex items-center justify-center text-white font-bold text-xs">
+          DD
+        </div>
+        <div>
+          <p class="text-white font-medium">Crafted by Dulith Divisekara</p>
+          <p class="text-slate-500">IT Undergraduate @ SLIIT Malabe, Sri Lanka • Born from Hutch 4G Optimization</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-6 font-mono text-xs">
+        <a href="https://github.com/dulithdivisekara/tp-link-mcp-web" class="hover:text-white transition-colors">Web GitHub</a>
+        <a href="https://github.com/dulithdivisekara/tplink-mcp" class="hover:text-white transition-colors">MCP GitHub</a>
+        <a href="https://tp-link-cli.dulith.me" class="hover:text-tplink-cyan transition-colors">CLI Tool Showcase</a>
+        <a href="https://dulith.me" class="hover:text-white transition-colors">dulith.me</a>
+      </div>
+
+      <div class="text-slate-500 text-center md:text-right font-mono">
+        MIT License • 100% Free & Open-Source
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

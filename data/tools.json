@@ -1,0 +1,289 @@
+[
+  {
+    "id": "router_profile_check",
+    "name": "router_profile_check",
+    "category": "Diagnostics",
+    "badge_color": "blue",
+    "description": "Probe router gateway to detect hardware model, firmware build string, and auth encryption type (AES, RSA, MD5, or plain form).",
+    "parameters": [],
+    "example_prompt": "Probe the router at 192.168.1.1 and report the model and auth type."
+  },
+  {
+    "id": "router_get_status",
+    "name": "router_get_status",
+    "category": "Diagnostics",
+    "badge_color": "blue",
+    "description": "Retrieve comprehensive runtime telemetry: WAN IP, gateway, DNS servers, uptime, cellular network type, and connection state.",
+    "parameters": [],
+    "example_prompt": "Check whether the router is online and retrieve the current WAN IP and primary DNS."
+  },
+  {
+    "id": "router_get_rf_signal",
+    "name": "router_get_rf_signal",
+    "category": "Cellular",
+    "badge_color": "emerald",
+    "description": "Read cellular radio frequency telemetry: RSRP (dBm), RSRQ (dB), SINR (dB), RSSI, current LTE/5G band, and Physical Cell ID (PCI).",
+    "parameters": [],
+    "example_prompt": "What is our current 4G signal quality, RSRP, and SINR in dB?"
+  },
+  {
+    "id": "router_lock_cell_band",
+    "name": "router_lock_cell_band",
+    "category": "Cellular",
+    "badge_color": "emerald",
+    "description": "Force-lock modem to specific LTE carrier band (e.g., Band 3 1800MHz, Band 8 900MHz, Band 40 2300MHz) or Physical Cell ID (PCI).",
+    "parameters": [
+      {
+        "name": "band",
+        "type": "string",
+        "required": true,
+        "description": "LTE band to lock, e.g. '3', '8', '20', '40', or 'AUTO'."
+      },
+      {
+        "name": "earfcn",
+        "type": "integer",
+        "required": false,
+        "description": "Optional carrier frequency channel number (EARFCN)."
+      },
+      {
+        "name": "pci",
+        "type": "integer",
+        "required": false,
+        "description": "Optional Physical Cell ID (PCI) to lock to a specific tower antenna."
+      }
+    ],
+    "example_prompt": "Lock the router modem to LTE Band 3 (1800MHz) to escape the congested Band 8 tower."
+  },
+  {
+    "id": "router_set_network_mode",
+    "name": "router_set_network_mode",
+    "category": "Cellular",
+    "badge_color": "emerald",
+    "description": "Switch cellular RAT between AUTO, 4G_ONLY, 3G_ONLY, and 5G_NSA to prevent drops to degraded 3G fallbacks.",
+    "parameters": [
+      {
+        "name": "mode",
+        "type": "string",
+        "required": true,
+        "description": "Network RAT mode: '4G_ONLY', '3G_ONLY', '5G_PREF', or 'AUTO'."
+      }
+    ],
+    "example_prompt": "Set the cellular network mode to 4G_ONLY to prevent the connection from downgrading."
+  },
+  {
+    "id": "router_manage_apn",
+    "name": "router_manage_apn",
+    "category": "Cellular",
+    "badge_color": "emerald",
+    "description": "Read or update the cellular APN profile, PDP type (IPv4, IPv6, IPv4v6), and authentication credentials.",
+    "parameters": [
+      {
+        "name": "apn",
+        "type": "string",
+        "required": false,
+        "description": "Carrier APN name (e.g. 'hutch3g', 'net', 'dialogbb')."
+      },
+      {
+        "name": "pdp_type",
+        "type": "string",
+        "required": false,
+        "description": "PDP protocol type: 'IPv4', 'IPv6', or 'IPv4v6'."
+      }
+    ],
+    "example_prompt": "Configure the APN to 'hutch3g' with PDP type IPv4."
+  },
+  {
+    "id": "router_read_sms",
+    "name": "router_read_sms",
+    "category": "SMS",
+    "badge_color": "purple",
+    "description": "List SMS messages stored on the SIM card, read sender phone numbers, timestamps, message content, and extract 2FA codes.",
+    "parameters": [
+      {
+        "name": "box",
+        "type": "string",
+        "required": false,
+        "description": "Mailbox to query: 'inbox', 'outbox', or 'drafts' (default: 'inbox')."
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "required": false,
+        "description": "Maximum number of recent messages to return (default: 10)."
+      }
+    ],
+    "example_prompt": "Read the latest 5 incoming SMS messages to check for carrier reload verification codes."
+  },
+  {
+    "id": "router_send_sms",
+    "name": "router_send_sms",
+    "category": "SMS",
+    "badge_color": "purple",
+    "description": "Transmit an outgoing SMS message via the SIM modem to activate package bundles, query quotas, or send alerts.",
+    "parameters": [
+      {
+        "name": "phone_number",
+        "type": "string",
+        "required": true,
+        "description": "Recipient phone number or carrier shortcode (e.g. '344')."
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "required": true,
+        "description": "Text body of the SMS."
+      }
+    ],
+    "example_prompt": "Send an SMS to '344' with body 'MYPLAN' to check carrier bundle status."
+  },
+  {
+    "id": "router_send_ussd",
+    "name": "router_send_ussd",
+    "category": "SMS",
+    "badge_color": "purple",
+    "description": "Send interactive USSD code to the mobile network operator gateway and capture the returned response text.",
+    "parameters": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "description": "USSD dial string, e.g. '*344#' or '*123#'."
+      }
+    ],
+    "example_prompt": "Execute USSD code '*344#' and return the balance text."
+  },
+  {
+    "id": "router_get_wifi_status",
+    "name": "router_get_wifi_status",
+    "category": "Wi-Fi",
+    "badge_color": "amber",
+    "description": "Inspect 2.4GHz & 5GHz Wi-Fi interfaces: SSID, enable state, channel, channel width (20/40/80 MHz), and security cipher.",
+    "parameters": [],
+    "example_prompt": "What Wi-Fi channels and channel widths are currently configured?"
+  },
+  {
+    "id": "router_set_wifi_channel",
+    "name": "router_set_wifi_channel",
+    "category": "Wi-Fi",
+    "badge_color": "amber",
+    "description": "Change Wi-Fi broadcast channel to avoid apartment or neighborhood frequency interference.",
+    "parameters": [
+      {
+        "name": "band",
+        "type": "string",
+        "required": true,
+        "description": "Wi-Fi band: '2.4GHz' or '5GHz'."
+      },
+      {
+        "name": "channel",
+        "type": "integer",
+        "required": true,
+        "description": "Channel number (e.g. 1, 6, 11 for 2.4GHz; 36, 40, 44, 48 for 5GHz)."
+      }
+    ],
+    "example_prompt": "Switch the 2.4GHz Wi-Fi channel to channel 6 to reduce interference."
+  },
+  {
+    "id": "router_get_connected_devices",
+    "name": "router_get_connected_devices",
+    "category": "Wi-Fi",
+    "badge_color": "amber",
+    "description": "List all active DHCP and Wi-Fi clients with hostnames, IP addresses, MAC addresses, and connection interface.",
+    "parameters": [],
+    "example_prompt": "Show all devices connected to the router right now with their MAC and IP addresses."
+  },
+  {
+    "id": "router_reboot",
+    "name": "router_reboot",
+    "category": "System",
+    "badge_color": "red",
+    "description": "Initiate a clean software reboot of the router OS and cellular modem module.",
+    "parameters": [],
+    "example_prompt": "Restart the router to clear memory and reinitialize the radio."
+  },
+  {
+    "id": "router_reconnect_wan",
+    "name": "router_reconnect_wan",
+    "category": "System",
+    "badge_color": "red",
+    "description": "Tear down and re-establish the cellular PPP/QMI/NDIS WAN connection to obtain a fresh CGNAT IP lease without rebooting.",
+    "parameters": [],
+    "example_prompt": "Reconnect the cellular session to obtain a new carrier IP address."
+  },
+  {
+    "id": "router_ping_pulse",
+    "name": "router_ping_pulse",
+    "category": "Tuning",
+    "badge_color": "teal",
+    "description": "Send low-overhead 28-byte UDP/ICMP echo pulses to remote server to prevent carrier NAT timeout and radio state demotion.",
+    "parameters": [
+      {
+        "name": "target",
+        "type": "string",
+        "required": false,
+        "description": "Target server (default: '1.1.1.1')."
+      },
+      {
+        "name": "interval_sec",
+        "type": "integer",
+        "required": false,
+        "description": "Pulse interval in seconds (default: 25)."
+      }
+    ],
+    "example_prompt": "Start a 25-second keepalive pulse to 1.1.1.1 to keep the LTE radio in active RRC state."
+  },
+  {
+    "id": "router_benchmark_network",
+    "name": "router_benchmark_network",
+    "category": "Tuning",
+    "badge_color": "teal",
+    "description": "Measure baseline latency, loaded bufferbloat jitter, and MTU path packet fragmentation.",
+    "parameters": [
+      {
+        "name": "target",
+        "type": "string",
+        "required": false,
+        "description": "Test host (default: '1.1.1.1')."
+      }
+    ],
+    "example_prompt": "Run a bufferbloat and MTU fragmentation benchmark against 1.1.1.1."
+  },
+  {
+    "id": "router_optimize_network",
+    "name": "router_optimize_network",
+    "category": "Tuning",
+    "badge_color": "teal",
+    "description": "Apply or revert kernel BBR congestion control, 1420 MTU GTP clamping, and 1.1.1.1 DNS tuning.",
+    "parameters": [
+      {
+        "name": "action",
+        "type": "string",
+        "required": true,
+        "description": "Action: 'apply' or 'revert'."
+      }
+    ],
+    "example_prompt": "Apply cellular optimization rules: BBR TCP congestion control and 1420 MTU clamp."
+  },
+  {
+    "id": "router_execute_command",
+    "name": "router_execute_command",
+    "category": "System",
+    "badge_color": "red",
+    "description": "Execute arbitrary raw JSON-RPC or cgi-bin command directly against the router administrative interface.",
+    "parameters": [
+      {
+        "name": "command",
+        "type": "string",
+        "required": true,
+        "description": "Administrative endpoint path or action."
+      },
+      {
+        "name": "params",
+        "type": "object",
+        "required": false,
+        "description": "JSON payload parameters."
+      }
+    ],
+    "example_prompt": "Send a direct diagnostic request to the router status endpoint."
+  }
+]

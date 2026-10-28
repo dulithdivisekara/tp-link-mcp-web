@@ -1,0 +1,26 @@
+name: Validate and Deploy Web Showcase
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate JSON Schemas and Pre-render
+        run: |
+          python3 scripts/build.py
+
+      - name: Check HTML File Exists
+        run: |
+          test -f index.html
