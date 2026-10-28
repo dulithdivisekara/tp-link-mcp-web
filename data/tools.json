@@ -1,289 +1,1060 @@
 [
   {
-    "id": "router_profile_check",
-    "name": "router_profile_check",
-    "category": "Diagnostics",
-    "badge_color": "blue",
-    "description": "Probe router gateway to detect hardware model, firmware build string, and auth encryption type (AES, RSA, MD5, or plain form).",
-    "parameters": [],
-    "example_prompt": "Probe the router at 192.168.1.1 and report the model and auth type."
+    "name": "router_calibrate",
+    "category": "Tuning",
+    "description": "Runs autonomous RF band calibration across LTE frequencies (Band 8, 3, 1, 40, Auto) with 45s watchdog fail-safe.",
+    "parameters": [
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "dry_run",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Dry Run"
+      },
+      {
+        "name": "port",
+        "type": "integer",
+        "required": false,
+        "default": 8765,
+        "description": "Port"
+      },
+      {
+        "name": "web",
+        "type": "boolean",
+        "required": false,
+        "default": true,
+        "description": "Web"
+      }
+    ],
+    "schema": {
+      "name": "router_calibrate",
+      "description": "Runs autonomous RF band calibration across LTE frequencies (Band 8, 3, 1, 40, Auto) with 45s watchdog fail-safe.\n\nLaunches a real-time Live Web Dashboard on http://localhost:8765.\nDuring band switches, the router modem temporarily detaches for 5-15 seconds.\nThe local daemon safeguards against permanent disconnection by auto-reverting if WAN drops for >45s.\n\nArgs:\n    web: Launch real-time Web UI on localhost:8765 (default: True).\n    port: Web dashboard port (default: 8765).\n    dry_run: Simulate band switches without modem detachment.\n    confirm: Confirmation flag to execute calibration.\n",
+      "parameters": {
+        "properties": {
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "dry_run": {
+            "default": false,
+            "title": "Dry Run",
+            "type": "boolean"
+          },
+          "port": {
+            "default": 8765,
+            "title": "Port",
+            "type": "integer"
+          },
+          "web": {
+            "default": true,
+            "title": "Web",
+            "type": "boolean"
+          }
+        },
+        "title": "router_calibrateArguments",
+        "type": "object"
+      }
+    }
   },
   {
-    "id": "router_get_status",
-    "name": "router_get_status",
+    "name": "router_get_connected_clients",
     "category": "Diagnostics",
-    "badge_color": "blue",
-    "description": "Retrieve comprehensive runtime telemetry: WAN IP, gateway, DNS servers, uptime, cellular network type, and connection state.",
-    "parameters": [],
-    "example_prompt": "Check whether the router is online and retrieve the current WAN IP and primary DNS."
+    "description": "Retrieves all connected wired and wireless devices currently on the router LAN.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_get_connected_clients",
+      "description": "Retrieves all connected wired and wireless devices currently on the router LAN.\n\nReturns hostnames, IP addresses, MAC addresses, and lease durations.\n",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_connected_clientsArguments",
+        "type": "object"
+      }
+    }
   },
   {
-    "id": "router_get_rf_signal",
+    "name": "router_get_data_limit",
+    "category": "Cellular",
+    "description": "Retrieves monthly cellular data allowance, billing cycle start day, and live bandwidth.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_get_data_limit",
+      "description": "Retrieves monthly cellular data allowance, billing cycle start day, and live bandwidth.",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_data_limitArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_get_led_status",
+    "category": "System",
+    "description": "Retrieves the physical LED status and night mode schedule.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_get_led_status",
+      "description": "Retrieves the physical LED status and night mode schedule.",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_led_statusArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
     "name": "router_get_rf_signal",
     "category": "Cellular",
-    "badge_color": "emerald",
-    "description": "Read cellular radio frequency telemetry: RSRP (dBm), RSRQ (dB), SINR (dB), RSSI, current LTE/5G band, and Physical Cell ID (PCI).",
-    "parameters": [],
-    "example_prompt": "What is our current 4G signal quality, RSRP, and SINR in dB?"
-  },
-  {
-    "id": "router_lock_cell_band",
-    "name": "router_lock_cell_band",
-    "category": "Cellular",
-    "badge_color": "emerald",
-    "description": "Force-lock modem to specific LTE carrier band (e.g., Band 3 1800MHz, Band 8 900MHz, Band 40 2300MHz) or Physical Cell ID (PCI).",
+    "description": "Retrieves real-time 4G LTE RF signal metrics (RSRP, RSRQ, SNR, EARFCN, PCI, Signal Bars).",
     "parameters": [
       {
-        "name": "band",
-        "type": "string",
-        "required": true,
-        "description": "LTE band to lock, e.g. '3', '8', '20', '40', or 'AUTO'."
-      },
-      {
-        "name": "earfcn",
-        "type": "integer",
+        "name": "force",
+        "type": "boolean",
         "required": false,
-        "description": "Optional carrier frequency channel number (EARFCN)."
-      },
-      {
-        "name": "pci",
-        "type": "integer",
-        "required": false,
-        "description": "Optional Physical Cell ID (PCI) to lock to a specific tower antenna."
+        "default": false,
+        "description": "Force"
       }
     ],
-    "example_prompt": "Lock the router modem to LTE Band 3 (1800MHz) to escape the congested Band 8 tower."
+    "schema": {
+      "name": "router_get_rf_signal",
+      "description": "Retrieves real-time 4G LTE RF signal metrics (RSRP, RSRQ, SNR, EARFCN, PCI, Signal Bars).\n\nGuides router placement and antenna alignment for maximum 4G speed in Sri Lanka (e.g. Malabe/SLIIT).\n",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_rf_signalArguments",
+        "type": "object"
+      }
+    }
   },
   {
-    "id": "router_set_network_mode",
-    "name": "router_set_network_mode",
-    "category": "Cellular",
-    "badge_color": "emerald",
-    "description": "Switch cellular RAT between AUTO, 4G_ONLY, 3G_ONLY, and 5G_NSA to prevent drops to degraded 3G fallbacks.",
+    "name": "router_get_status",
+    "category": "Diagnostics",
+    "description": "Retrieves full device, cellular LTE, RF signal metrics, and WAN network status.",
     "parameters": [
       {
-        "name": "mode",
-        "type": "string",
-        "required": true,
-        "description": "Network RAT mode: '4G_ONLY', '3G_ONLY', '5G_PREF', or 'AUTO'."
-      }
-    ],
-    "example_prompt": "Set the cellular network mode to 4G_ONLY to prevent the connection from downgrading."
-  },
-  {
-    "id": "router_manage_apn",
-    "name": "router_manage_apn",
-    "category": "Cellular",
-    "badge_color": "emerald",
-    "description": "Read or update the cellular APN profile, PDP type (IPv4, IPv6, IPv4v6), and authentication credentials.",
-    "parameters": [
-      {
-        "name": "apn",
-        "type": "string",
+        "name": "force",
+        "type": "boolean",
         "required": false,
-        "description": "Carrier APN name (e.g. 'hutch3g', 'net', 'dialogbb')."
-      },
-      {
-        "name": "pdp_type",
-        "type": "string",
-        "required": false,
-        "description": "PDP protocol type: 'IPv4', 'IPv6', or 'IPv4v6'."
+        "default": false,
+        "description": "Force"
       }
     ],
-    "example_prompt": "Configure the APN to 'hutch3g' with PDP type IPv4."
-  },
-  {
-    "id": "router_read_sms",
-    "name": "router_read_sms",
-    "category": "SMS",
-    "badge_color": "purple",
-    "description": "List SMS messages stored on the SIM card, read sender phone numbers, timestamps, message content, and extract 2FA codes.",
-    "parameters": [
-      {
-        "name": "box",
-        "type": "string",
-        "required": false,
-        "description": "Mailbox to query: 'inbox', 'outbox', or 'drafts' (default: 'inbox')."
-      },
-      {
-        "name": "limit",
-        "type": "integer",
-        "required": false,
-        "description": "Maximum number of recent messages to return (default: 10)."
+    "schema": {
+      "name": "router_get_status",
+      "description": "Retrieves full device, cellular LTE, RF signal metrics, and WAN network status.\n\nArgs:\n    force: Set to True to bypass Network Guard SSID/Gateway validation.\n",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_statusArguments",
+        "type": "object"
       }
-    ],
-    "example_prompt": "Read the latest 5 incoming SMS messages to check for carrier reload verification codes."
+    }
   },
   {
-    "id": "router_send_sms",
-    "name": "router_send_sms",
-    "category": "SMS",
-    "badge_color": "purple",
-    "description": "Transmit an outgoing SMS message via the SIM modem to activate package bundles, query quotas, or send alerts.",
-    "parameters": [
-      {
-        "name": "phone_number",
-        "type": "string",
-        "required": true,
-        "description": "Recipient phone number or carrier shortcode (e.g. '344')."
-      },
-      {
-        "name": "message",
-        "type": "string",
-        "required": true,
-        "description": "Text body of the SMS."
-      }
-    ],
-    "example_prompt": "Send an SMS to '344' with body 'MYPLAN' to check carrier bundle status."
-  },
-  {
-    "id": "router_send_ussd",
-    "name": "router_send_ussd",
-    "category": "SMS",
-    "badge_color": "purple",
-    "description": "Send interactive USSD code to the mobile network operator gateway and capture the returned response text.",
-    "parameters": [
-      {
-        "name": "code",
-        "type": "string",
-        "required": true,
-        "description": "USSD dial string, e.g. '*344#' or '*123#'."
-      }
-    ],
-    "example_prompt": "Execute USSD code '*344#' and return the balance text."
-  },
-  {
-    "id": "router_get_wifi_status",
-    "name": "router_get_wifi_status",
+    "name": "router_get_wifi_networks",
     "category": "Wi-Fi",
-    "badge_color": "amber",
-    "description": "Inspect 2.4GHz & 5GHz Wi-Fi interfaces: SSID, enable state, channel, channel width (20/40/80 MHz), and security cipher.",
-    "parameters": [],
-    "example_prompt": "What Wi-Fi channels and channel widths are currently configured?"
-  },
-  {
-    "id": "router_set_wifi_channel",
-    "name": "router_set_wifi_channel",
-    "category": "Wi-Fi",
-    "badge_color": "amber",
-    "description": "Change Wi-Fi broadcast channel to avoid apartment or neighborhood frequency interference.",
+    "description": "Retrieves status, SSIDs, channels, and operational state of 2.4 GHz and 5 GHz Wi-Fi radios.",
     "parameters": [
       {
-        "name": "band",
-        "type": "string",
-        "required": true,
-        "description": "Wi-Fi band: '2.4GHz' or '5GHz'."
-      },
-      {
-        "name": "channel",
-        "type": "integer",
-        "required": true,
-        "description": "Channel number (e.g. 1, 6, 11 for 2.4GHz; 36, 40, 44, 48 for 5GHz)."
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
       }
     ],
-    "example_prompt": "Switch the 2.4GHz Wi-Fi channel to channel 6 to reduce interference."
+    "schema": {
+      "name": "router_get_wifi_networks",
+      "description": "Retrieves status, SSIDs, channels, and operational state of 2.4 GHz and 5 GHz Wi-Fi radios.",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_get_wifi_networksArguments",
+        "type": "object"
+      }
+    }
   },
   {
-    "id": "router_get_connected_devices",
-    "name": "router_get_connected_devices",
-    "category": "Wi-Fi",
-    "badge_color": "amber",
-    "description": "List all active DHCP and Wi-Fi clients with hostnames, IP addresses, MAC addresses, and connection interface.",
-    "parameters": [],
-    "example_prompt": "Show all devices connected to the router right now with their MAC and IP addresses."
-  },
-  {
-    "id": "router_reboot",
-    "name": "router_reboot",
+    "name": "router_manage_dhcp_reservation",
     "category": "System",
-    "badge_color": "red",
-    "description": "Initiate a clean software reboot of the router OS and cellular modem module.",
-    "parameters": [],
-    "example_prompt": "Restart the router to clear memory and reinitialize the radio."
-  },
-  {
-    "id": "router_reconnect_wan",
-    "name": "router_reconnect_wan",
-    "category": "System",
-    "badge_color": "red",
-    "description": "Tear down and re-establish the cellular PPP/QMI/NDIS WAN connection to obtain a fresh CGNAT IP lease without rebooting.",
-    "parameters": [],
-    "example_prompt": "Reconnect the cellular session to obtain a new carrier IP address."
-  },
-  {
-    "id": "router_ping_pulse",
-    "name": "router_ping_pulse",
-    "category": "Tuning",
-    "badge_color": "teal",
-    "description": "Send low-overhead 28-byte UDP/ICMP echo pulses to remote server to prevent carrier NAT timeout and radio state demotion.",
-    "parameters": [
-      {
-        "name": "target",
-        "type": "string",
-        "required": false,
-        "description": "Target server (default: '1.1.1.1')."
-      },
-      {
-        "name": "interval_sec",
-        "type": "integer",
-        "required": false,
-        "description": "Pulse interval in seconds (default: 25)."
-      }
-    ],
-    "example_prompt": "Start a 25-second keepalive pulse to 1.1.1.1 to keep the LTE radio in active RRC state."
-  },
-  {
-    "id": "router_benchmark_network",
-    "name": "router_benchmark_network",
-    "category": "Tuning",
-    "badge_color": "teal",
-    "description": "Measure baseline latency, loaded bufferbloat jitter, and MTU path packet fragmentation.",
-    "parameters": [
-      {
-        "name": "target",
-        "type": "string",
-        "required": false,
-        "description": "Test host (default: '1.1.1.1')."
-      }
-    ],
-    "example_prompt": "Run a bufferbloat and MTU fragmentation benchmark against 1.1.1.1."
-  },
-  {
-    "id": "router_optimize_network",
-    "name": "router_optimize_network",
-    "category": "Tuning",
-    "badge_color": "teal",
-    "description": "Apply or revert kernel BBR congestion control, 1420 MTU GTP clamping, and 1.1.1.1 DNS tuning.",
+    "description": "Manages static DHCP IP address reservations on the router.",
     "parameters": [
       {
         "name": "action",
         "type": "string",
         "required": true,
-        "description": "Action: 'apply' or 'revert'."
-      }
-    ],
-    "example_prompt": "Apply cellular optimization rules: BBR TCP congestion control and 1420 MTU clamp."
-  },
-  {
-    "id": "router_execute_command",
-    "name": "router_execute_command",
-    "category": "System",
-    "badge_color": "red",
-    "description": "Execute arbitrary raw JSON-RPC or cgi-bin command directly against the router administrative interface.",
-    "parameters": [
-      {
-        "name": "command",
-        "type": "string",
-        "required": true,
-        "description": "Administrative endpoint path or action."
+        "default": null,
+        "description": "Action"
       },
       {
-        "name": "params",
-        "type": "object",
+        "name": "confirm",
+        "type": "boolean",
         "required": false,
-        "description": "JSON payload parameters."
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "ip",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Ip"
+      },
+      {
+        "name": "mac",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Mac"
       }
     ],
-    "example_prompt": "Send a direct diagnostic request to the router status endpoint."
+    "schema": {
+      "name": "router_manage_dhcp_reservation",
+      "description": "Manages static DHCP IP address reservations on the router.\n\nArgs:\n    action: 'add', 'delete', or 'list'.\n    mac: Hardware MAC address (e.g. 'AA:BB:CC:DD:EE:FF', required for 'add' or 'delete').\n    ip: Desired reserved IP address (required for 'add').\n    confirm: Confirmation required for 'add' or 'delete'.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ip"
+          },
+          "mac": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Mac"
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "title": "router_manage_dhcp_reservationArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_profile_check",
+    "category": "Diagnostics",
+    "description": "Inspects the current host network environment (SSID, Gateway) to ensure connection safety.",
+    "parameters": [],
+    "schema": {
+      "name": "router_profile_check",
+      "description": "Inspects the current host network environment (SSID, Gateway) to ensure connection safety.\n\nUse this tool before applying configuration changes to confirm that the host is connected\nto the target router and not University Wi-Fi (e.g. SLIIT) or a mobile hotspot.\n",
+      "parameters": {
+        "properties": {},
+        "title": "router_profile_checkArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_read_sms",
+    "category": "SMS",
+    "description": "Reads incoming or sent SMS messages from the router SIM inbox (e.g. package expiry alerts).",
+    "parameters": [
+      {
+        "name": "folder",
+        "type": "string",
+        "required": false,
+        "default": "inbox",
+        "description": "Folder"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "limit",
+        "type": "integer",
+        "required": false,
+        "default": 10,
+        "description": "Limit"
+      }
+    ],
+    "schema": {
+      "name": "router_read_sms",
+      "description": "Reads incoming or sent SMS messages from the router SIM inbox (e.g. package expiry alerts).\n\nArgs:\n    limit: Maximum number of SMS messages to retrieve (default 10).\n    folder: Message folder ('inbox' or 'sent').\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "folder": {
+            "default": "inbox",
+            "title": "Folder",
+            "type": "string"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "limit": {
+            "default": 10,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "router_read_smsArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_reboot",
+    "category": "System",
+    "description": "Initiates a graceful reboot of the TP-Link router.",
+    "parameters": [
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_reboot",
+      "description": "Initiates a graceful reboot of the TP-Link router.\n\nIMPORTANT: Rebooting will terminate the host's internet and Wi-Fi connection for ~60-90 seconds.\nYou MUST provide confirm=True to execute.\n\nArgs:\n    confirm: Safety confirmation. Set to True to trigger the restart.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_rebootArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_run_diagnostic",
+    "category": "Diagnostics",
+    "description": "Runs a router-side diagnostic self-test verifying physical link, WAN IP, and Internet NCSI reachability.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_run_diagnostic",
+      "description": "Runs a router-side diagnostic self-test verifying physical link, WAN IP, and Internet NCSI reachability.",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "title": "router_run_diagnosticArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_run_ussd",
+    "category": "Cellular",
+    "description": "Executes a USSD query on the cellular SIM card (e.g. '*344#' for Hutch quota, '*123#' for balance).",
+    "parameters": [
+      {
+        "name": "code",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Code"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_run_ussd",
+      "description": "Executes a USSD query on the cellular SIM card (e.g. '*344#' for Hutch quota, '*123#' for balance).\n\nArgs:\n    code: USSD string to send.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "title": "router_run_ussdArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_send_sms",
+    "category": "SMS",
+    "description": "Sends an SMS message through the router SIM card.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "message",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Message"
+      },
+      {
+        "name": "to_phone",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "To Phone"
+      }
+    ],
+    "schema": {
+      "name": "router_send_sms",
+      "description": "Sends an SMS message through the router SIM card.\n\nArgs:\n    to_phone: Recipient phone number.\n    message: Message text content.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "to_phone": {
+            "title": "To Phone",
+            "type": "string"
+          }
+        },
+        "required": [
+          "to_phone",
+          "message"
+        ],
+        "title": "router_send_smsArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_cell_lock",
+    "category": "Cellular",
+    "description": "Locks or unlocks the router to a specific cellular base station tower (EARFCN + PCI).",
+    "parameters": [
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "earfcn",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Earfcn"
+      },
+      {
+        "name": "enable",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Enable"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "pci",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Pci"
+      }
+    ],
+    "schema": {
+      "name": "router_set_cell_lock",
+      "description": "Locks or unlocks the router to a specific cellular base station tower (EARFCN + PCI).\n\nIMPORTANT: Changing the cell tower momentarily drops and renegotiates the cellular link.\nYou MUST provide confirm=True to execute.\n\nArgs:\n    enable: True to lock to cell, False to unlock (return to auto roaming).\n    earfcn: E-UTRA Absolute Radio Frequency Channel Number (e.g. '1550' for Band 3).\n    pci: Physical Cell Identity (e.g. '58').\n    confirm: Safety confirmation. Set to True to proceed with connection renegotiation.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "earfcn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Earfcn"
+          },
+          "enable": {
+            "title": "Enable",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "pci": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Pci"
+          }
+        },
+        "required": [
+          "enable"
+        ],
+        "title": "router_set_cell_lockArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_data_limit",
+    "category": "Cellular",
+    "description": "Configures monthly cellular data quota, billing day reset, and usage alert threshold.",
+    "parameters": [
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "enable",
+        "type": "boolean",
+        "required": false,
+        "default": true,
+        "description": "Enable"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "limit_mb",
+        "type": "integer",
+        "required": true,
+        "default": null,
+        "description": "Limit Mb"
+      },
+      {
+        "name": "payment_day",
+        "type": "integer",
+        "required": false,
+        "default": 1,
+        "description": "Payment Day"
+      },
+      {
+        "name": "warning_percent",
+        "type": "integer",
+        "required": false,
+        "default": 90,
+        "description": "Warning Percent"
+      }
+    ],
+    "schema": {
+      "name": "router_set_data_limit",
+      "description": "Configures monthly cellular data quota, billing day reset, and usage alert threshold.\n\nArgs:\n    limit_mb: Total monthly data allowance in Megabytes (e.g. 50000 for 50GB).\n    payment_day: Day of month when billing cycle resets (1-31).\n    warning_percent: Threshold percent to trigger alert (e.g. 90).\n    enable: True to enforce quota, False to disable.\n    confirm: Confirmation required to apply data quota limits.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "enable": {
+            "default": true,
+            "title": "Enable",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "limit_mb": {
+            "title": "Limit Mb",
+            "type": "integer"
+          },
+          "payment_day": {
+            "default": 1,
+            "title": "Payment Day",
+            "type": "integer"
+          },
+          "warning_percent": {
+            "default": 90,
+            "title": "Warning Percent",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "limit_mb"
+        ],
+        "title": "router_set_data_limitArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_dns",
+    "category": "System",
+    "description": "Configures custom DNS resolvers on the router's WAN connection.",
+    "parameters": [
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "primary_dns",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Primary Dns"
+      },
+      {
+        "name": "secondary_dns",
+        "type": "string",
+        "required": false,
+        "default": "8.8.8.8",
+        "description": "Secondary Dns"
+      }
+    ],
+    "schema": {
+      "name": "router_set_dns",
+      "description": "Configures custom DNS resolvers on the router's WAN connection.\n\nArgs:\n    primary_dns: Primary DNS IP (e.g. '8.8.8.8' for Google DNS, '1.1.1.1' for Cloudflare).\n    secondary_dns: Secondary DNS IP (default '8.8.8.8').\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "primary_dns": {
+            "title": "Primary Dns",
+            "type": "string"
+          },
+          "secondary_dns": {
+            "default": "8.8.8.8",
+            "title": "Secondary Dns",
+            "type": "string"
+          }
+        },
+        "required": [
+          "primary_dns"
+        ],
+        "title": "router_set_dnsArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_led_night_mode",
+    "category": "System",
+    "description": "Configures night mode to turn off router front panel LEDs automatically during sleeping hours.",
+    "parameters": [
+      {
+        "name": "enable",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Enable"
+      },
+      {
+        "name": "end_time",
+        "type": "string",
+        "required": false,
+        "default": "07:00",
+        "description": "End Time"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "start_time",
+        "type": "string",
+        "required": false,
+        "default": "22:00",
+        "description": "Start Time"
+      }
+    ],
+    "schema": {
+      "name": "router_set_led_night_mode",
+      "description": "Configures night mode to turn off router front panel LEDs automatically during sleeping hours.\n\nArgs:\n    enable: True to activate night mode schedule, False to disable.\n    start_time: 'HH:MM' time when LEDs turn OFF (e.g. '22:00').\n    end_time: 'HH:MM' time when LEDs turn back ON (e.g. '07:00').\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "enable": {
+            "title": "Enable",
+            "type": "boolean"
+          },
+          "end_time": {
+            "default": "07:00",
+            "title": "End Time",
+            "type": "string"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "start_time": {
+            "default": "22:00",
+            "title": "Start Time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "enable"
+        ],
+        "title": "router_set_led_night_modeArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_lte_band",
+    "category": "Cellular",
+    "description": "Manually locks router to a specific LTE band (e.g. '3' for 1800MHz, '8' for 900MHz, '40' for 2300MHz, or 'auto').",
+    "parameters": [
+      {
+        "name": "band",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Band"
+      },
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_set_lte_band",
+      "description": "Manually locks router to a specific LTE band (e.g. '3' for 1800MHz, '8' for 900MHz, '40' for 2300MHz, or 'auto').\n\nEssential for locking to optimal Hutch/Dialog 4G towers in Sri Lanka (e.g. Malabe).\nIMPORTANT: Changing bands triggers cellular radio renegotiation.\n\nArgs:\n    band: LTE Band number (e.g. '3', '8', '40') or 'auto'.\n    confirm: Safety confirmation. Set to True to execute band change.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "band": {
+            "title": "Band",
+            "type": "string"
+          },
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "band"
+        ],
+        "title": "router_set_lte_bandArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_set_wifi_radio",
+    "category": "Wi-Fi",
+    "description": "Enables or disables a Wi-Fi radio (2.4GHz or 5GHz) and optionally updates its SSID.",
+    "parameters": [
+      {
+        "name": "band",
+        "type": "string",
+        "required": true,
+        "default": null,
+        "description": "Band"
+      },
+      {
+        "name": "confirm",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Confirm"
+      },
+      {
+        "name": "enable",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Enable"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      },
+      {
+        "name": "ssid",
+        "type": "string",
+        "required": false,
+        "default": null,
+        "description": "Ssid"
+      }
+    ],
+    "schema": {
+      "name": "router_set_wifi_radio",
+      "description": "Enables or disables a Wi-Fi radio (2.4GHz or 5GHz) and optionally updates its SSID.\n\nIMPORTANT: Disabling the Wi-Fi band you are currently connected to will disconnect your host!\nYou MUST provide confirm=True to execute.\n\nArgs:\n    band: '2.4GHz' or '5GHz'.\n    enable: True to enable radio, False to disable.\n    ssid: Optional new SSID name.\n    confirm: Safety confirmation. Set to True to apply radio changes.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "band": {
+            "title": "Band",
+            "type": "string"
+          },
+          "confirm": {
+            "default": false,
+            "title": "Confirm",
+            "type": "boolean"
+          },
+          "enable": {
+            "title": "Enable",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          },
+          "ssid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ssid"
+          }
+        },
+        "required": [
+          "band",
+          "enable"
+        ],
+        "title": "router_set_wifi_radioArguments",
+        "type": "object"
+      }
+    }
+  },
+  {
+    "name": "router_toggle_ipv6",
+    "category": "System",
+    "description": "Enables or disables the IPv6 stack on the router's cellular connection.",
+    "parameters": [
+      {
+        "name": "enable",
+        "type": "boolean",
+        "required": true,
+        "default": null,
+        "description": "Enable"
+      },
+      {
+        "name": "force",
+        "type": "boolean",
+        "required": false,
+        "default": false,
+        "description": "Force"
+      }
+    ],
+    "schema": {
+      "name": "router_toggle_ipv6",
+      "description": "Enables or disables the IPv6 stack on the router's cellular connection.\n\nDisabling IPv6 is recommended if Hutch IPv6 routing is introducing dual-stack timeout delays.\n\nArgs:\n    enable: True to enable IPv6, False to disable.\n    force: Set to True to bypass Network Guard safety check.\n",
+      "parameters": {
+        "properties": {
+          "enable": {
+            "title": "Enable",
+            "type": "boolean"
+          },
+          "force": {
+            "default": false,
+            "title": "Force",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enable"
+        ],
+        "title": "router_toggle_ipv6Arguments",
+        "type": "object"
+      }
+    }
   }
 ]
