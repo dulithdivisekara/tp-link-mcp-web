@@ -1,8 +1,8 @@
 {
   "name": "TP-Link Router MCP Server",
   "version": "1.0.0",
-  "description": "Universal Model Context Protocol server exposing 18 carrier-grade tools for AI agents to control TP-Link 4G/LTE/5G Archer and MiFi routers.",
-  "last_updated": "2026-10-28",
+  "description": "Universal Model Context Protocol server exposing 39 carrier-grade tools for AI agents to control TP-Link 4G/LTE/5G Archer and MiFi routers.",
+  "last_updated": "2026-10-29",
   "author": {
     "name": "Dulith Divisekara",
     "affiliation": "SLIIT Malabe, Sri Lanka",
@@ -17,7 +17,7 @@
     "builder_hub": "https://github.com/dulithdivisekara/tplink-router-builder"
   },
   "stats": {
-    "tools_count": 18,
+    "tools_count": 39,
     "categories_count": 6,
     "supported_brands": ["TP-Link Archer MR Series", "TL-MR100/6400", "M7000/M7350 MiFi", "OpenWrt TP-Link Modems"]
   }

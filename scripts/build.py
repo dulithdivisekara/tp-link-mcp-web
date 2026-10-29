@@ -2,7 +2,7 @@
 """Static Site Builder & Validator for TP-Link MCP Showcase.
 
 Reads `data/metadata.json` and `data/tools.json`, validates schemas,
-and builds an optimized static web package for Cloudflare Pages.
+and builds an optimized static web package for GitHub Pages and Cloudflare Pages.
 
 Author: Dulith Divisekara (SLIIT Malabe)
 """
@@ -34,7 +34,7 @@ def validate_data():
     with open(TOOLS_FILE, "r", encoding="utf-8") as f:
         tools = json.load(f)
     assert isinstance(tools, list), "tools.json must be a JSON array"
-    assert len(tools) >= 18, f"Expected at least 18 tools, found {len(tools)}"
+    assert len(tools) >= 30, f"Expected at least 30 tools, found {len(tools)}"
 
     for t in tools:
         assert "name" in t, f"Tool missing 'name': {t}"
@@ -48,29 +48,29 @@ def validate_data():
 
 def render_tool_html(t):
     badge_colors = {
-        "Diagnostics": "bg-blue-500/10 text-blue-400 border-blue-500/20",
-        "Cellular": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-        "SMS": "bg-purple-500/10 text-purple-400 border-purple-500/20",
-        "Wi-Fi": "bg-amber-500/10 text-amber-400 border-amber-500/20",
-        "System": "bg-red-500/10 text-red-400 border-red-500/20",
-        "Tuning": "bg-teal-500/10 text-teal-400 border-teal-500/20",
+        "Diagnostics": "bg-blue-100 text-blue-900 dark:bg-blue-900/40 dark:text-blue-300",
+        "Cellular": "bg-emerald-100 text-emerald-900 dark:bg-emerald-900/40 dark:text-emerald-300",
+        "SMS": "bg-purple-100 text-purple-900 dark:bg-purple-900/40 dark:text-purple-300",
+        "Wi-Fi": "bg-amber-100 text-amber-900 dark:bg-amber-900/40 dark:text-amber-300",
+        "System": "bg-rose-100 text-rose-900 dark:bg-rose-900/40 dark:text-rose-300",
+        "Tuning": "bg-teal-100 text-teal-900 dark:bg-teal-900/40 dark:text-teal-300",
     }
-    badge_class = badge_colors.get(t.get("category", "Diagnostics"), "bg-slate-500/10 text-slate-400 border-white/10")
+    badge_class = badge_colors.get(t.get("category", "Diagnostics"), "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-300")
 
     param_count = len(t.get("parameters", []))
     param_text = f"{param_count} param{'s' if param_count != 1 else ''}" if param_count > 0 else "0 params"
 
-    return f"""        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="{t['name']}" data-cat="{t['category']}" onclick="openToolModal('{t['name']}')">
-          <div class="flex items-center justify-between mb-3">
-            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">{t['name']}</code>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono border {badge_class}">{t['category']}</span>
+    return f"""        <div class="rounded-xl p-5 bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 tool-card cursor-pointer group transition-all duration-150" data-name="{t['name']}" data-cat="{t['category']}" onclick="openToolModal('{t['name']}')">
+          <div class="flex items-center justify-between mb-3 gap-2">
+            <code class="text-sm font-bold font-mono text-teal-700 dark:text-tplink-cyan group-hover:underline break-all">{t['name']}</code>
+            <span class="shrink-0 px-2.5 py-0.5 rounded text-xs font-sans font-semibold {badge_class}">{t['category']}</span>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed mb-4">{t['description']}</p>
-          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
-            <span>{param_text}</span>
-            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+          <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-4">{t['description']}</p>
+          <div class="flex items-center justify-between text-xs font-sans text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-slate-800 pt-3">
+            <span class="font-mono">{param_text}</span>
+            <span class="text-teal-700 dark:text-tplink-cyan font-semibold group-hover:underline flex items-center gap-1">
               Inspect Schema
-              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </span>
           </div>
         </div>"""
@@ -86,7 +86,6 @@ def build():
 
     content = HTML_FILE.read_text(encoding="utf-8")
 
-    # Injected pre-rendered grid
     grid_html = "\n".join([render_tool_html(t) for t in tools])
 
     start_tag = '<!-- TOOLS_GRID_START -->'
