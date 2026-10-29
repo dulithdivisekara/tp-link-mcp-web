@@ -238,6 +238,20 @@
       <!-- Tools Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="tools-grid">
         <!-- TOOLS_GRID_START -->
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_add_port_forwarding" data-cat="System" onclick="openToolModal('router_add_port_forwarding')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_add_port_forwarding</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Creates a new NAT virtual server port forwarding rule on the router.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>7 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
         <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_calibrate" data-cat="Tuning" onclick="openToolModal('router_calibrate')">
           <div class="flex items-center justify-between mb-3">
             <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_calibrate</code>
@@ -246,6 +260,48 @@
           <p class="text-xs text-slate-300 leading-relaxed mb-4">Runs autonomous RF band calibration across LTE frequencies (Band 8, 3, 1, 40, Auto) with 45s watchdog fail-safe.</p>
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
             <span>4 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_check_firmware" data-cat="System" onclick="openToolModal('router_check_firmware')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_check_firmware</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Checks for available online official TP-Link firmware updates.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_clear_system_logs" data-cat="Diagnostics" onclick="openToolModal('router_clear_system_logs')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_clear_system_logs</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-blue-500/10 text-blue-400 border-blue-500/20">Diagnostics</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Clears the internal system event log buffer on the router.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>2 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_del_port_forwarding" data-cat="System" onclick="openToolModal('router_del_port_forwarding')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_del_port_forwarding</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Deletes an existing NAT virtual server port forwarding rule by stack ID.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>3 params</span>
             <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
               Inspect Schema
               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -280,12 +336,96 @@
             </span>
           </div>
         </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_ddns" data-cat="System" onclick="openToolModal('router_get_ddns')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_ddns</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves Dynamic DNS (DDNS) provider configurations (TP-Link Cloud, No-IP, DynDNS).</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_dmz" data-cat="System" onclick="openToolModal('router_get_dmz')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_dmz</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves DMZ (Demilitarized Zone) host forwarding status and destination IP.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_guest_wifi" data-cat="Wi-Fi" onclick="openToolModal('router_get_guest_wifi')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_guest_wifi</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-amber-500/10 text-amber-400 border-amber-500/20">Wi-Fi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves current dual-band (2.4GHz / 5GHz) Guest Wi-Fi status, SSIDs, and isolation settings.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
         <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_led_status" data-cat="System" onclick="openToolModal('router_get_led_status')">
           <div class="flex items-center justify-between mb-3">
             <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_led_status</code>
             <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves the physical LED status and night mode schedule.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_operation_mode" data-cat="System" onclick="openToolModal('router_get_operation_mode')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_operation_mode</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves the active router operation mode (3G/4G Router Mode vs Wireless Router Mode).</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_port_forwarding" data-cat="System" onclick="openToolModal('router_get_port_forwarding')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_port_forwarding</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Lists active NAT Virtual Server port forwarding rules on the cellular WAN interface.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_reboot_schedule" data-cat="System" onclick="openToolModal('router_get_reboot_schedule')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_reboot_schedule</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves the automated periodic reboot schedule settings.</p>
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
             <span>1 param</span>
             <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
@@ -314,6 +454,48 @@
             <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-blue-500/10 text-blue-400 border-blue-500/20">Diagnostics</span>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves full device, cellular LTE, RF signal metrics, and WAN network status.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_system_logs" data-cat="Diagnostics" onclick="openToolModal('router_get_system_logs')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_system_logs</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-blue-500/10 text-blue-400 border-blue-500/20">Diagnostics</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves system and cellular event logs from the TP-Link router.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>4 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_time" data-cat="System" onclick="openToolModal('router_get_time')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_time</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves current router system clock, time zone, daylight savings, and NTP server status.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_get_upnp" data-cat="System" onclick="openToolModal('router_get_upnp')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_get_upnp</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Retrieves Universal Plug and Play (UPnP) status and active dynamic port mappings.</p>
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
             <span>1 param</span>
             <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
@@ -462,6 +644,20 @@
             </span>
           </div>
         </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_dmz" data-cat="System" onclick="openToolModal('router_set_dmz')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_dmz</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Enables or disables DMZ host forwarding to an internal IP address.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>4 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
         <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_dns" data-cat="System" onclick="openToolModal('router_set_dns')">
           <div class="flex items-center justify-between mb-3">
             <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_dns</code>
@@ -470,6 +666,20 @@
           <p class="text-xs text-slate-300 leading-relaxed mb-4">Configures custom DNS resolvers on the router's WAN connection.</p>
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
             <span>3 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_guest_wifi" data-cat="Wi-Fi" onclick="openToolModal('router_set_guest_wifi')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_guest_wifi</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-amber-500/10 text-amber-400 border-amber-500/20">Wi-Fi</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Configures or toggles dual-band Guest Wi-Fi networks and local LAN isolation.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>7 params</span>
             <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
               Inspect Schema
               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -504,6 +714,34 @@
             </span>
           </div>
         </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_reboot_schedule" data-cat="System" onclick="openToolModal('router_set_reboot_schedule')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_reboot_schedule</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Configures or disables automated daily or weekly periodic router reboots.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>7 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_upnp" data-cat="System" onclick="openToolModal('router_set_upnp')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_upnp</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Enables or disables UPnP dynamic port forwarding on the router.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>3 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
         <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_set_wifi_radio" data-cat="Wi-Fi" onclick="openToolModal('router_set_wifi_radio')">
           <div class="flex items-center justify-between mb-3">
             <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_set_wifi_radio</code>
@@ -512,6 +750,20 @@
           <p class="text-xs text-slate-300 leading-relaxed mb-4">Enables or disables a Wi-Fi radio (2.4GHz or 5GHz) and optionally updates its SSID.</p>
           <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
             <span>5 params</span>
+            <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
+              Inspect Schema
+              <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
+        </div>
+        <div class="glass-card rounded-xl p-5 tool-card cursor-pointer group" data-name="router_sync_time" data-cat="System" onclick="openToolModal('router_sync_time')">
+          <div class="flex items-center justify-between mb-3">
+            <code class="text-sm font-bold font-mono text-tplink-cyan group-hover:text-white transition-colors">router_sync_time</code>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono border bg-red-500/10 text-red-400 border-red-500/20">System</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">Triggers an immediate NTP network time synchronization on the router.</p>
+          <div class="flex items-center justify-between text-[11px] font-mono text-slate-400 border-t border-white/5 pt-3">
+            <span>1 param</span>
             <span class="text-tplink-cyan group-hover:underline flex items-center gap-1">
               Inspect Schema
               <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
