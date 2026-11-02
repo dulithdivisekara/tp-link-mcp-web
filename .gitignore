@@ -1,0 +1,15 @@
+# Environment and secrets
+.env
+.env.*
+*.log
+
+# Deployment and cache
+.wrangler/
+.cloudflare/
+node_modules/
+
+# OS and Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
